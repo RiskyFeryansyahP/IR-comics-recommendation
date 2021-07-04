@@ -1,16 +1,30 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 
-	"github.com/RiskyFeryansyahP/ir-comics-recommendation/internal/service/scrapper/usecase"
-	"github.com/gocolly/colly"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/config"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/ent/migrate"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 func main() {
 	fmt.Println("Information Retrieval - Comics Recommendation")
 
-	c := colly.NewCollector()
+	ctx := context.Background()
 
-	usecase.ScrapWebToon(c)
+	cfg := config.NewMapConfig()
+	client, err := cfg.DBConnection()
+	if err != nil {
+		log.Printf("no connection database: %+v \n", err)
+	}
+
+	err = client.Schema.Create(ctx, migrate.WithDropIndex(true))
+	if err != nil {
+		log.Printf("failed migration: %+v \n", err)
+	}
+
+	// c := colly.NewCollector()
 }
