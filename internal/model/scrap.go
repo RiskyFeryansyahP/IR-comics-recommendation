@@ -13,7 +13,7 @@ type Scrap struct{}
 type UsecaseScrap interface{}
 
 // MysqlRepositoryScrap ...
-type MysqlRepositoryScrap struct{
-  InsertGenre(ctx context.Context, data []*Genre) ([]*ent.Genre, error)
+type MysqlRepositoryScrap interface {
+	InsertGenre(ctx context.Context, data []*Genre) ([]*ent.Genre, error)
 	InsertComic(ctx context.Context, data []*Comic) ([]*ent.Comic, error)
 }
