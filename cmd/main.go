@@ -7,6 +7,9 @@ import (
 
 	"github.com/RiskyFeryansyahP/ir-comics-recommendation/config"
 	"github.com/RiskyFeryansyahP/ir-comics-recommendation/ent/migrate"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/internal/service/scrapper/repository"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/internal/service/scrapper/usecase"
+	"github.com/gocolly/colly"
 	_ "github.com/joho/godotenv/autoload"
 )
 
@@ -26,5 +29,15 @@ func main() {
 		log.Printf("failed migration: %+v \n", err)
 	}
 
-	// c := colly.NewCollector()
+	c := colly.NewCollector()
+
+	repo := repository.NewScrapperRepository(client)
+	uc := usecase.NewScrapperUsecase(repo, c)
+
+	err = uc.ScrapWebToon(ctx)
+	if err != nil {
+		log.Printf("something wrong: %+v \n", err)
+	}
+
+	repo.InsertComicGenre()
 }

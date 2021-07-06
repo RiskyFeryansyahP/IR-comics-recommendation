@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"fmt"
 	"strings"
 
@@ -8,12 +9,26 @@ import (
 	"github.com/gocolly/colly"
 )
 
+// ScrapperUsecase ...
+type ScrapperUsecase struct {
+	ScrapperRepo model.MysqlRepositoryScrap
+	Colly        *colly.Collector
+}
+
+// NewScrapperUsecase ...
+func NewScrapperUsecase(scrapperRepo model.MysqlRepositoryScrap, c *colly.Collector) model.UsecaseScrap {
+	return &ScrapperUsecase{
+		ScrapperRepo: scrapperRepo,
+		Colly:        c,
+	}
+}
+
 // ScrapWebToon ...
-func ScrapWebToon(c *colly.Collector) {
+func (su *ScrapperUsecase) ScrapWebToon(ctx context.Context) error {
 	genres := make([]*model.Genre, 0)
 	comics := make([]*model.Comic, 0)
 
-	c.OnHTML(".sub_title", func(e *colly.HTMLElement) {
+	su.Colly.OnHTML(".sub_title", func(e *colly.HTMLElement) {
 		genre := &model.Genre{
 			Name: strings.ToLower(e.Text),
 		}
@@ -21,7 +36,7 @@ func ScrapWebToon(c *colly.Collector) {
 		genres = append(genres, genre)
 	})
 
-	c.OnHTML(".card_lst li a .info", func(h *colly.HTMLElement) {
+	su.Colly.OnHTML(".card_lst li a .info", func(h *colly.HTMLElement) {
 		comic := &model.Comic{
 			Title:  h.ChildText(".subj"),
 			Author: h.ChildText(".author"),
@@ -31,9 +46,21 @@ func ScrapWebToon(c *colly.Collector) {
 		comics = append(comics, comic)
 	})
 
-	c.OnRequest(func(r *colly.Request) {
+	su.Colly.OnRequest(func(r *colly.Request) {
 		fmt.Println("Visiting", r.URL)
 	})
 
-	c.Visit("https://www.webtoons.com/id/genre")
+	su.Colly.Visit("https://www.webtoons.com/id/genre")
+
+	_, err := su.ScrapperRepo.InsertGenre(ctx, genres)
+	if err != nil {
+		return err
+	}
+
+	_, err = su.ScrapperRepo.InsertComic(ctx, comics)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

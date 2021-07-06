@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/RiskyFeryansyahP/ir-comics-recommendation/ent"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/ent/genre"
 	"github.com/RiskyFeryansyahP/ir-comics-recommendation/internal/model"
 )
 
@@ -41,4 +42,14 @@ func (sr *ScrapperRepository) InsertComic(ctx context.Context, data []*model.Com
 
 	comics, err := sr.Client.Comic.CreateBulk(bulkComic...).Save(ctx)
 	return comics, err
+}
+
+// InsertComicGenre ...
+func (sr *ScrapperRepository) InsertComicGenre() {
+	for i := 541; i <= 567; i++ {
+		sr.Client.Genre.Update().
+			AddComicIDs(i).
+			Where(genre.IDEQ(10)).
+			Save(context.Background())
+	}
 }
