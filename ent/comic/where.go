@@ -105,10 +105,10 @@ func Author(v string) predicate.Comic {
 	})
 }
 
-// Like applies equality check predicate on the "Like" field. It's identical to LikeEQ.
-func Like(v string) predicate.Comic {
+// Description applies equality check predicate on the "Description" field. It's identical to DescriptionEQ.
+func Description(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLike), v))
+		s.Where(sql.EQ(s.C(FieldDescription), v))
 	})
 }
 
@@ -334,22 +334,22 @@ func AuthorContainsFold(v string) predicate.Comic {
 	})
 }
 
-// LikeEQ applies the EQ predicate on the "Like" field.
-func LikeEQ(v string) predicate.Comic {
+// DescriptionEQ applies the EQ predicate on the "Description" field.
+func DescriptionEQ(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldLike), v))
+		s.Where(sql.EQ(s.C(FieldDescription), v))
 	})
 }
 
-// LikeNEQ applies the NEQ predicate on the "Like" field.
-func LikeNEQ(v string) predicate.Comic {
+// DescriptionNEQ applies the NEQ predicate on the "Description" field.
+func DescriptionNEQ(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldLike), v))
+		s.Where(sql.NEQ(s.C(FieldDescription), v))
 	})
 }
 
-// LikeIn applies the In predicate on the "Like" field.
-func LikeIn(vs ...string) predicate.Comic {
+// DescriptionIn applies the In predicate on the "Description" field.
+func DescriptionIn(vs ...string) predicate.Comic {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -361,12 +361,12 @@ func LikeIn(vs ...string) predicate.Comic {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.In(s.C(FieldLike), v...))
+		s.Where(sql.In(s.C(FieldDescription), v...))
 	})
 }
 
-// LikeNotIn applies the NotIn predicate on the "Like" field.
-func LikeNotIn(vs ...string) predicate.Comic {
+// DescriptionNotIn applies the NotIn predicate on the "Description" field.
+func DescriptionNotIn(vs ...string) predicate.Comic {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
@@ -378,70 +378,70 @@ func LikeNotIn(vs ...string) predicate.Comic {
 			s.Where(sql.False())
 			return
 		}
-		s.Where(sql.NotIn(s.C(FieldLike), v...))
+		s.Where(sql.NotIn(s.C(FieldDescription), v...))
 	})
 }
 
-// LikeGT applies the GT predicate on the "Like" field.
-func LikeGT(v string) predicate.Comic {
+// DescriptionGT applies the GT predicate on the "Description" field.
+func DescriptionGT(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldLike), v))
+		s.Where(sql.GT(s.C(FieldDescription), v))
 	})
 }
 
-// LikeGTE applies the GTE predicate on the "Like" field.
-func LikeGTE(v string) predicate.Comic {
+// DescriptionGTE applies the GTE predicate on the "Description" field.
+func DescriptionGTE(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldLike), v))
+		s.Where(sql.GTE(s.C(FieldDescription), v))
 	})
 }
 
-// LikeLT applies the LT predicate on the "Like" field.
-func LikeLT(v string) predicate.Comic {
+// DescriptionLT applies the LT predicate on the "Description" field.
+func DescriptionLT(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldLike), v))
+		s.Where(sql.LT(s.C(FieldDescription), v))
 	})
 }
 
-// LikeLTE applies the LTE predicate on the "Like" field.
-func LikeLTE(v string) predicate.Comic {
+// DescriptionLTE applies the LTE predicate on the "Description" field.
+func DescriptionLTE(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldLike), v))
+		s.Where(sql.LTE(s.C(FieldDescription), v))
 	})
 }
 
-// LikeContains applies the Contains predicate on the "Like" field.
-func LikeContains(v string) predicate.Comic {
+// DescriptionContains applies the Contains predicate on the "Description" field.
+func DescriptionContains(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldLike), v))
+		s.Where(sql.Contains(s.C(FieldDescription), v))
 	})
 }
 
-// LikeHasPrefix applies the HasPrefix predicate on the "Like" field.
-func LikeHasPrefix(v string) predicate.Comic {
+// DescriptionHasPrefix applies the HasPrefix predicate on the "Description" field.
+func DescriptionHasPrefix(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldLike), v))
+		s.Where(sql.HasPrefix(s.C(FieldDescription), v))
 	})
 }
 
-// LikeHasSuffix applies the HasSuffix predicate on the "Like" field.
-func LikeHasSuffix(v string) predicate.Comic {
+// DescriptionHasSuffix applies the HasSuffix predicate on the "Description" field.
+func DescriptionHasSuffix(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldLike), v))
+		s.Where(sql.HasSuffix(s.C(FieldDescription), v))
 	})
 }
 
-// LikeEqualFold applies the EqualFold predicate on the "Like" field.
-func LikeEqualFold(v string) predicate.Comic {
+// DescriptionEqualFold applies the EqualFold predicate on the "Description" field.
+func DescriptionEqualFold(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldLike), v))
+		s.Where(sql.EqualFold(s.C(FieldDescription), v))
 	})
 }
 
-// LikeContainsFold applies the ContainsFold predicate on the "Like" field.
-func LikeContainsFold(v string) predicate.Comic {
+// DescriptionContainsFold applies the ContainsFold predicate on the "Description" field.
+func DescriptionContainsFold(v string) predicate.Comic {
 	return predicate.Comic(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldLike), v))
+		s.Where(sql.ContainsFold(s.C(FieldDescription), v))
 	})
 }
 

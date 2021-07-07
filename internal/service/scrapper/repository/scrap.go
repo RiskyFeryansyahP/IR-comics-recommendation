@@ -37,7 +37,7 @@ func (sr *ScrapperRepository) InsertComic(ctx context.Context, data []*model.Com
 	bulkComic := make([]*ent.ComicCreate, len(data))
 
 	for k, v := range data {
-		bulkComic[k] = sr.Client.Comic.Create().SetTitle(v.Title).SetAuthor(v.Author).SetLike(v.Like)
+		bulkComic[k] = sr.Client.Comic.Create().SetTitle(v.Title).SetAuthor(v.Author)
 	}
 
 	comics, err := sr.Client.Comic.CreateBulk(bulkComic...).Save(ctx)

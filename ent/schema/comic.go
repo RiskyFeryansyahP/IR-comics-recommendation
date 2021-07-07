@@ -16,7 +16,7 @@ func (Comic) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("Title"),
 		field.String("Author"),
-		field.String("Like"),
+		field.Text("Description"),
 	}
 }
 

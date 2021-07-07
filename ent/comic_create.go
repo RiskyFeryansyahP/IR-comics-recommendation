@@ -32,9 +32,9 @@ func (cc *ComicCreate) SetAuthor(s string) *ComicCreate {
 	return cc
 }
 
-// SetLike sets the "Like" field.
-func (cc *ComicCreate) SetLike(s string) *ComicCreate {
-	cc.mutation.SetLike(s)
+// SetDescription sets the "Description" field.
+func (cc *ComicCreate) SetDescription(s string) *ComicCreate {
+	cc.mutation.SetDescription(s)
 	return cc
 }
 
@@ -110,8 +110,8 @@ func (cc *ComicCreate) check() error {
 	if _, ok := cc.mutation.Author(); !ok {
 		return &ValidationError{Name: "Author", err: errors.New("ent: missing required field \"Author\"")}
 	}
-	if _, ok := cc.mutation.Like(); !ok {
-		return &ValidationError{Name: "Like", err: errors.New("ent: missing required field \"Like\"")}
+	if _, ok := cc.mutation.Description(); !ok {
+		return &ValidationError{Name: "Description", err: errors.New("ent: missing required field \"Description\"")}
 	}
 	return nil
 }
@@ -156,13 +156,13 @@ func (cc *ComicCreate) createSpec() (*Comic, *sqlgraph.CreateSpec) {
 		})
 		_node.Author = value
 	}
-	if value, ok := cc.mutation.Like(); ok {
+	if value, ok := cc.mutation.Description(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: comic.FieldLike,
+			Column: comic.FieldDescription,
 		})
-		_node.Like = value
+		_node.Description = value
 	}
 	if nodes := cc.mutation.GenresIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

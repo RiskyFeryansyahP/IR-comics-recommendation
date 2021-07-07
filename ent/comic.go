@@ -19,8 +19,8 @@ type Comic struct {
 	Title string `json:"Title,omitempty"`
 	// Author holds the value of the "Author" field.
 	Author string `json:"Author,omitempty"`
-	// Like holds the value of the "Like" field.
-	Like string `json:"Like,omitempty"`
+	// Description holds the value of the "Description" field.
+	Description string `json:"Description,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ComicQuery when eager-loading is set.
 	Edges ComicEdges `json:"edges"`
@@ -51,7 +51,7 @@ func (*Comic) scanValues(columns []string) ([]interface{}, error) {
 		switch columns[i] {
 		case comic.FieldID:
 			values[i] = new(sql.NullInt64)
-		case comic.FieldTitle, comic.FieldAuthor, comic.FieldLike:
+		case comic.FieldTitle, comic.FieldAuthor, comic.FieldDescription:
 			values[i] = new(sql.NullString)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type Comic", columns[i])
@@ -86,11 +86,11 @@ func (c *Comic) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				c.Author = value.String
 			}
-		case comic.FieldLike:
+		case comic.FieldDescription:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field Like", values[i])
+				return fmt.Errorf("unexpected type %T for field Description", values[i])
 			} else if value.Valid {
-				c.Like = value.String
+				c.Description = value.String
 			}
 		}
 	}
@@ -129,8 +129,8 @@ func (c *Comic) String() string {
 	builder.WriteString(c.Title)
 	builder.WriteString(", Author=")
 	builder.WriteString(c.Author)
-	builder.WriteString(", Like=")
-	builder.WriteString(c.Like)
+	builder.WriteString(", Description=")
+	builder.WriteString(c.Description)
 	builder.WriteByte(')')
 	return builder.String()
 }

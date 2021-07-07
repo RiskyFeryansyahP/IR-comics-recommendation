@@ -11,8 +11,8 @@ const (
 	FieldTitle = "title"
 	// FieldAuthor holds the string denoting the author field in the database.
 	FieldAuthor = "author"
-	// FieldLike holds the string denoting the like field in the database.
-	FieldLike = "like"
+	// FieldDescription holds the string denoting the description field in the database.
+	FieldDescription = "description"
 	// EdgeGenres holds the string denoting the genres edge name in mutations.
 	EdgeGenres = "genres"
 	// Table holds the table name of the comic in the database.
@@ -29,7 +29,7 @@ var Columns = []string{
 	FieldID,
 	FieldTitle,
 	FieldAuthor,
-	FieldLike,
+	FieldDescription,
 }
 
 var (

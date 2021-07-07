@@ -39,9 +39,9 @@ func (cu *ComicUpdate) SetAuthor(s string) *ComicUpdate {
 	return cu
 }
 
-// SetLike sets the "Like" field.
-func (cu *ComicUpdate) SetLike(s string) *ComicUpdate {
-	cu.mutation.SetLike(s)
+// SetDescription sets the "Description" field.
+func (cu *ComicUpdate) SetDescription(s string) *ComicUpdate {
+	cu.mutation.SetDescription(s)
 	return cu
 }
 
@@ -169,11 +169,11 @@ func (cu *ComicUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: comic.FieldAuthor,
 		})
 	}
-	if value, ok := cu.mutation.Like(); ok {
+	if value, ok := cu.mutation.Description(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: comic.FieldLike,
+			Column: comic.FieldDescription,
 		})
 	}
 	if cu.mutation.GenresCleared() {
@@ -261,9 +261,9 @@ func (cuo *ComicUpdateOne) SetAuthor(s string) *ComicUpdateOne {
 	return cuo
 }
 
-// SetLike sets the "Like" field.
-func (cuo *ComicUpdateOne) SetLike(s string) *ComicUpdateOne {
-	cuo.mutation.SetLike(s)
+// SetDescription sets the "Description" field.
+func (cuo *ComicUpdateOne) SetDescription(s string) *ComicUpdateOne {
+	cuo.mutation.SetDescription(s)
 	return cuo
 }
 
@@ -415,11 +415,11 @@ func (cuo *ComicUpdateOne) sqlSave(ctx context.Context) (_node *Comic, err error
 			Column: comic.FieldAuthor,
 		})
 	}
-	if value, ok := cuo.mutation.Like(); ok {
+	if value, ok := cuo.mutation.Description(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: comic.FieldLike,
+			Column: comic.FieldDescription,
 		})
 	}
 	if cuo.mutation.GenresCleared() {

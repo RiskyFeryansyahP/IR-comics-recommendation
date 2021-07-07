@@ -13,7 +13,7 @@ var (
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "title", Type: field.TypeString},
 		{Name: "author", Type: field.TypeString},
-		{Name: "like", Type: field.TypeString},
+		{Name: "description", Type: field.TypeString, Size: 2147483647},
 	}
 	// ComicsTable holds the schema information for the "comics" table.
 	ComicsTable = &schema.Table{

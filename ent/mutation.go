@@ -35,7 +35,7 @@ type ComicMutation struct {
 	id            *int
 	_Title        *string
 	_Author       *string
-	_Like         *string
+	_Description  *string
 	clearedFields map[string]struct{}
 	genres        map[int]struct{}
 	removedgenres map[int]struct{}
@@ -196,40 +196,40 @@ func (m *ComicMutation) ResetAuthor() {
 	m._Author = nil
 }
 
-// SetLike sets the "Like" field.
-func (m *ComicMutation) SetLike(s string) {
-	m._Like = &s
+// SetDescription sets the "Description" field.
+func (m *ComicMutation) SetDescription(s string) {
+	m._Description = &s
 }
 
-// Like returns the value of the "Like" field in the mutation.
-func (m *ComicMutation) Like() (r string, exists bool) {
-	v := m._Like
+// Description returns the value of the "Description" field in the mutation.
+func (m *ComicMutation) Description() (r string, exists bool) {
+	v := m._Description
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldLike returns the old "Like" field's value of the Comic entity.
+// OldDescription returns the old "Description" field's value of the Comic entity.
 // If the Comic object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *ComicMutation) OldLike(ctx context.Context) (v string, err error) {
+func (m *ComicMutation) OldDescription(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, fmt.Errorf("OldLike is only allowed on UpdateOne operations")
+		return v, fmt.Errorf("OldDescription is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, fmt.Errorf("OldLike requires an ID field in the mutation")
+		return v, fmt.Errorf("OldDescription requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldLike: %w", err)
+		return v, fmt.Errorf("querying old value for OldDescription: %w", err)
 	}
-	return oldValue.Like, nil
+	return oldValue.Description, nil
 }
 
-// ResetLike resets all changes to the "Like" field.
-func (m *ComicMutation) ResetLike() {
-	m._Like = nil
+// ResetDescription resets all changes to the "Description" field.
+func (m *ComicMutation) ResetDescription() {
+	m._Description = nil
 }
 
 // AddGenreIDs adds the "genres" edge to the Genre entity by ids.
@@ -306,8 +306,8 @@ func (m *ComicMutation) Fields() []string {
 	if m._Author != nil {
 		fields = append(fields, comic.FieldAuthor)
 	}
-	if m._Like != nil {
-		fields = append(fields, comic.FieldLike)
+	if m._Description != nil {
+		fields = append(fields, comic.FieldDescription)
 	}
 	return fields
 }
@@ -321,8 +321,8 @@ func (m *ComicMutation) Field(name string) (ent.Value, bool) {
 		return m.Title()
 	case comic.FieldAuthor:
 		return m.Author()
-	case comic.FieldLike:
-		return m.Like()
+	case comic.FieldDescription:
+		return m.Description()
 	}
 	return nil, false
 }
@@ -336,8 +336,8 @@ func (m *ComicMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldTitle(ctx)
 	case comic.FieldAuthor:
 		return m.OldAuthor(ctx)
-	case comic.FieldLike:
-		return m.OldLike(ctx)
+	case comic.FieldDescription:
+		return m.OldDescription(ctx)
 	}
 	return nil, fmt.Errorf("unknown Comic field %s", name)
 }
@@ -361,12 +361,12 @@ func (m *ComicMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetAuthor(v)
 		return nil
-	case comic.FieldLike:
+	case comic.FieldDescription:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetLike(v)
+		m.SetDescription(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Comic field %s", name)
@@ -423,8 +423,8 @@ func (m *ComicMutation) ResetField(name string) error {
 	case comic.FieldAuthor:
 		m.ResetAuthor()
 		return nil
-	case comic.FieldLike:
-		m.ResetLike()
+	case comic.FieldDescription:
+		m.ResetDescription()
 		return nil
 	}
 	return fmt.Errorf("unknown Comic field %s", name)
