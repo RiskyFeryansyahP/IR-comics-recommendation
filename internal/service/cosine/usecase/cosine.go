@@ -1,15 +1,83 @@
-package cosine
+package usecase
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"strings"
 
 	"github.com/RiskyFeryansyahP/ir-comics-recommendation/ent"
+	"github.com/RiskyFeryansyahP/ir-comics-recommendation/internal/model"
 )
 
+// CosineUsecase ...
+type CosineUsecase struct {
+	CosineRepo model.MysqlRepositoryCosine
+}
+
+// NewCosineUsecase ...
+func NewCosineUsecase(repo model.MysqlRepositoryCosine) model.UsecaseCosine {
+	return &CosineUsecase{
+		CosineRepo: repo,
+	}
+}
+
+// GetComics ...
+func (cu *CosineUsecase) GetComics(ctx context.Context) ([]*ent.Comic, error) {
+	comics, err := cu.CosineRepo.GetAllComic(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return comics, nil
+}
+
+// GetCosine ...
+func (cu *CosineUsecase) GetCosine(ctx context.Context, id int) (*model.Cosine, error) {
+	docs := make(map[string]*ent.Comic)
+
+	listComics := make([]*ent.Comic, 0)
+
+	comics, err := cu.CosineRepo.GetAllComic(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	comic, err := cu.CosineRepo.GetComicByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, v := range comics {
+		docs[v.Title] = v
+	}
+
+	docsIdx := DocsIndex(docs)
+	reversedDocs := ReversedDocs(docsIdx)
+	myTerms := MyTerms(reversedDocs)
+	list := GetCosineSimilarity(docs, reversedDocs, comic.Title, myTerms)
+
+	for _, v := range list {
+		c, err := cu.CosineRepo.GetComicByName(ctx, v)
+		if err != nil {
+			return nil, err
+		}
+
+		listComics = append(listComics, c)
+	}
+
+	res := &model.Cosine{
+		Comic:          comic,
+		Recommendation: listComics,
+	}
+
+	return res, nil
+}
+
 // GetCosineSimilarity ...
-func GetCosineSimilarity(docs map[string]*ent.Comic, reversed map[string]map[string]int, term string, myTerms []string) {
+func GetCosineSimilarity(docs map[string]*ent.Comic, reversed map[string]map[string]int, term string, myTerms []string) []string {
+	list := make([]string, 0)
+
 	v1 := vectorize(reversed, term, myTerms, len(docs))
 	for k := range docs {
 		if k == term {
@@ -19,9 +87,12 @@ func GetCosineSimilarity(docs map[string]*ent.Comic, reversed map[string]map[str
 		res := cosineSimilarity(v1, v2)
 
 		if res > 0.50 {
+			list = append(list, k)
 			fmt.Println(k)
 		}
 	}
+
+	return list
 }
 
 // DocsIndex ...
